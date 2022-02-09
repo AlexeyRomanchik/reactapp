@@ -11,13 +11,13 @@ class EmployeesListItem extends Component {
         };
     }
 
-    addIncrease = () => {
+    onIncrease = () => {
         this.setState(({ increase }) => ({
             increase: !increase
         }));
     }
 
-    like = () => {
+    onLike = () => {
         this.setState(({ like }) => ({
             like: !like
         }));
@@ -39,12 +39,12 @@ class EmployeesListItem extends Component {
         return (
             <li className={liClassNames}>
                 <span className="list-group-item-label"
-                    onClick={this.like}>{name}</span>
+                    onClick={this.onLike}>{name}</span>
                 <input type="text" className="list-group-item-input" defaultValue={salary + "$"} />
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button"
                         className="btn-cookie btn-sm "
-                        onClick={this.addIncrease}>
+                        onClick={this.onIncrease}>
                         <i className="fas fa-cookie"></i>
                     </button>
 
