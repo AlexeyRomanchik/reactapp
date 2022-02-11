@@ -6,7 +6,9 @@ class EmployeesAddForm extends Component {
         super(props);
         this.state = {
             name: "",
-            salary: ""
+            salary: "",
+            isNameValid: true,
+            isSalaryValid: true
         };
     }
 
@@ -18,18 +20,32 @@ class EmployeesAddForm extends Component {
 
     onSubmit = (event) => {
         event.preventDefault();
-
+        
         const { name, salary } = this.state;
-        this.props.onAdd({ name, salary });
+        let { isNameValid, isSalaryValid } = this.state;
 
-        this.setState({
-            name: "",
-            salary: ""
-        });  
+        isNameValid = this.isNameValid(name);
+        isSalaryValid = this.isSalaryValid(salary);
+
+        if (isNameValid && isSalaryValid) {
+            this.props.onAdd({ name, salary });
+
+            this.setState({
+                name: "",
+                salary: ""
+            });
+        }
+
+        this.setState({ isNameValid, isSalaryValid });
     }
 
+    isNameValid = (name) => name.length > 3 && name.length < 150;
+
+    isSalaryValid = (salary) => !isNaN(salary) && salary !== "" && (+salary) >= 0;
+
     render() {
-        const { name, salary } = this.state;
+        const { name, salary, isNameValid, isSalaryValid } = this.state;
+        const inputClass = "form-control new-post-label";
 
         return (
             <div className="app-add-form">
@@ -37,13 +53,13 @@ class EmployeesAddForm extends Component {
                 <form className="add-form d-flex"
                     onSubmit={this.onSubmit}>
                     <input type="text"
-                        className="form-control new-post-label"
+                        className={!isNameValid ? inputClass + " not-valid" : inputClass}
                         placeholder="Как его зовут?"
                         name="name"
                         value={name}
                         onChange={this.onValueChange} />
                     <input type="number"
-                        className="form-control new-post-label"
+                        className={!isSalaryValid ? inputClass + " not-valid" : inputClass}
                         placeholder="З/П в $?"
                         name="salary"
                         value={salary}
